@@ -1,102 +1,158 @@
 <!DOCTYPE html>
-<html lang="zxx">
-
+<html lang="en">
 <head>
-  <!-- Global site tag (gtag.js) - Google Analytics -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-H0RD4J9LRZ"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag() { dataLayer.push(arguments); }
-    gtag('js', new Date());
-
-    gtag('config', 'G-H0RD4J9LRZ');
-  </script>
-  <title>Yeng Tan</title>
   <meta charset="UTF-8" />
-  <meta name="description" content="Mister Yam by Yeng Tan" />
-  <!-- Favicon -->
-  <link href="img/favicon.ico" rel="shortcut icon" />
-  <!-- Stylesheets -->
-  <link rel="stylesheet" href="css/style.css" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Yeng Tan</title>
+  <meta name="description" content="Yeng Tan" />
+  <link rel="icon" href="img/favicon.svg" type="image/svg+xml" />
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html, body {
+      height: 100%;
+      background: #fff;
+    }
+
+    .container {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .image-wrapper {
+      position: relative;
+      max-width: 750px;
+      max-height: 550px;
+      overflow: hidden;
+      cursor: zoom-in;
+    }
+
+    .image-wrapper.zoomed {
+      cursor: zoom-out;
+    }
+
+    .image-wrapper.zoomed.dragging {
+      cursor: grabbing;
+    }
+
+    .image-wrapper.zoomed:active {
+      cursor: grabbing;
+    }
+
+    .image-wrapper img {
+      display: block;
+      max-width: 100%;
+      max-height: 550px;
+      object-fit: contain;
+      transition: transform 0.3s ease;
+      transform-origin: center center;
+      pointer-events: none;
+    }
+
+    .image-wrapper.zoomed img {
+      transform: scale(2.5);
+    }
+  </style>
 </head>
-
-<body style="background-color:white;font-family: Verdana;">
-  <!-- Page Preloder -->
-  <div id="preloder">
-    <div class="loader"></div>
-  </div>
-
-  <h1> Yeng Tan </h1>
-  <br></br>
-
-  <div class='centerBody'>
-    <div class='left'>
-      <img src="img/book-cover.png">
-    </div>
-    <div class='right'>
-      <h4>Praise for Mister Yam:</h4>
-      <br>
-      <p>
-        “In this debut novel...Tan’s cerebral novel is reminiscent of Haruki Murakami both in its structure and its
-        dreamlike
-        prose...The tale’s tone is charmingly offbeat.” <b><i><a href="https://www.kirkusreviews.com/book-reviews/yeng-k-tan/mister-yam/">— Kirkus Reviews</i></a></b>
-      </p>
-      <br>
-      <br>
-      <p> “SHEEP. Bald man. A lost friend...they make the premise of an incredible story crafted by San Francisco-based Malaysian Yeng Tan.”
-        <b><a href="https://www.nst.com.my/lifestyle/sunday-vibes/2022/06/808206/book-review-yeng-tans-mister-yam-winged-sheep-leads-young-man"><i>— New Straits Times</i></a></b>
-      </p>
-      <br>
-      <br>
-      <p>
-        “Malaysian’s debut novel is equal parts philosophical and whimsical.” <b><a href="https://www.freemalaysiatoday.com/category/leisure/entertainment/2021/11/28/malaysians-debut-novel-is-equal-parts-philosophical-and-whimsical/"><i>— Free Malaysia Today</i></a></b>
-      </p>
-
+<body>
+  <div class="container">
+    <div class="image-wrapper" id="wrapper">
+      <img src="img/map.webp" id="img" alt="" draggable="false" />
     </div>
   </div>
-  <br>
 
-  <br>
-  <br>
+  <script>
+    console.log('%cThose who know don\'t say; those who say don\'t know', 'font-style: italic; color: #888;');
 
-  <div class='authorText'>
-    <h2>About the author</h3>
-      <br>
+    const wrapper = document.getElementById('wrapper');
+    const img = document.getElementById('img');
+    
+    let zoomed = false;
+    let isDragging = false;
+    let startX, startY;
+    let originX = 50, originY = 50;
 
-      <br>
+    // Click to zoom in/out
+    wrapper.addEventListener('click', (e) => {
+      if (isDragging) return; // Don't toggle if we were dragging
+      
+      if (!zoomed) {
+        // Zoom in at click point
+        const rect = wrapper.getBoundingClientRect();
+        originX = ((e.clientX - rect.left) / rect.width) * 100;
+        originY = ((e.clientY - rect.top) / rect.height) * 100;
+        img.style.transformOrigin = `${originX}% ${originY}%`;
+        zoomed = true;
+        wrapper.classList.add('zoomed');
+      } else {
+        // Zoom out
+        zoomed = false;
+        wrapper.classList.remove('zoomed');
+      }
+    });
 
-      <div class='left'>
-        <img src="img/yeng_tan.png">
-      </div>
-      <div class='right'>
-        <p>
-          Yeng Tan, originally from Kuala Lumpur and now based in Brooklyn, is the author of the novel Mister Yam. Driven by a laksa of Eastern and Western influences, his writing is infused with elements of mystery, magical realism, and philosophy, drawing attention to the spirit of the locales he describes.
-        </p>
-        <br>
-        <br>
-        <p>
-          His work has garnered attention in Malaysian media periodicals like the New Straits Times, with Mister Yam receiving an honorable mention in fiction at the 2022 San Francisco Book Festival. Currently, Tan is immersed in writing his second book - Morin.        </p>
-        <br>
-        <br>
-        <p>
-          Tan cites Agatha Christie, Haruki Murakami, Paul Auster, Hilma af Klint, and Andrei Tarkovsky as influences on his work.
-        </p>
-        <br>
-        <br>
-      </div>
-      <br>
-
-  </div>
-  </div>
-
-  <!--====== Javascripts & Jquery ======-->
-  <script src="js/jquery-3.2.1.min.js"></script>
-  <script src="js/bootstrap.min.js"></script>
-  <script src="js/owl.carousel.min.js"></script>
-  <script src="js/circle-progress.min.js"></script>
-  <script src="js/main.js"></script>
-
+    // Drag to pan when zoomed
+    wrapper.addEventListener('mousedown', (e) => {
+      if (!zoomed) return;
+      e.preventDefault();
+      isDragging = false;
+      startX = e.clientX;
+      startY = e.clientY;
+      wrapper.classList.add('dragging');
+      
+      const onMove = (e) => {
+        const dx = e.clientX - startX;
+        const dy = e.clientY - startY;
+        
+        // Only count as dragging if moved more than 5px
+        if (Math.abs(dx) > 5 || Math.abs(dy) > 5) {
+          isDragging = true;
+        }
+        
+        // Adjust origin based on drag (inverted because we're moving the origin)
+        const rect = wrapper.getBoundingClientRect();
+        const sensitivity = 100 / rect.width * 0.5;
+        
+        let newOriginX = originX - dx * sensitivity;
+        let newOriginY = originY - dy * sensitivity;
+        
+        // Clamp to reasonable bounds
+        newOriginX = Math.max(0, Math.min(100, newOriginX));
+        newOriginY = Math.max(0, Math.min(100, newOriginY));
+        
+        img.style.transformOrigin = `${newOriginX}% ${newOriginY}%`;
+      };
+      
+      const onUp = (e) => {
+        wrapper.classList.remove('dragging');
+        
+        // Update stored origin
+        const rect = wrapper.getBoundingClientRect();
+        const sensitivity = 100 / rect.width * 0.5;
+        const dx = e.clientX - startX;
+        const dy = e.clientY - startY;
+        
+        originX = Math.max(0, Math.min(100, originX - dx * sensitivity));
+        originY = Math.max(0, Math.min(100, originY - dy * sensitivity));
+        
+        document.removeEventListener('mousemove', onMove);
+        document.removeEventListener('mouseup', onUp);
+        
+        // Reset drag flag after a tick to prevent click from firing
+        setTimeout(() => { isDragging = false; }, 10);
+      };
+      
+      document.addEventListener('mousemove', onMove);
+      document.addEventListener('mouseup', onUp);
+    });
+  </script>
 </body>
-
 </html>
-
