@@ -4,8 +4,11 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Yeng Tan</title>
-  <meta name="description" content="Yeng Tan" />
+  <meta name="description" content="Yeng Tan (CEO, Lekondo)" />
   <link rel="icon" href="img/favicon.svg" type="image/svg+xml" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet" />
 
   <style>
     * {
@@ -14,145 +17,124 @@
       box-sizing: border-box;
     }
 
+    :root {
+      color-scheme: light;
+      --background: #fff;
+      --text: #141414;
+      --muted: #4c4c47;
+    }
+
     html, body {
-      height: 100%;
-      background: #fff;
+      min-height: 100%;
+      background: var(--background);
+      color: var(--text);
+      font-family: 'Lora', Georgia, serif;
+      text-align: left;
+    }
+
+    body {
+      padding: 0 1.5rem 8rem;
     }
 
     .container {
       width: 100%;
-      height: 100%;
-      display: flex;
-      justify-content: center;
-      align-items: center;
+      max-width: 880px;
+      margin: 0;
+      padding-top: clamp(2.5rem, 7vw, 5.5rem);
     }
 
-    .image-wrapper {
-      position: relative;
-      max-width: 750px;
-      max-height: 550px;
-      overflow: hidden;
-      cursor: zoom-in;
+    .content {
+      max-width: 880px;
+      width: 100%;
     }
 
-    .image-wrapper.zoomed {
-      cursor: zoom-out;
-    }
-
-    .image-wrapper.zoomed.dragging {
-      cursor: grabbing;
-    }
-
-    .image-wrapper.zoomed:active {
-      cursor: grabbing;
-    }
-
-    .image-wrapper img {
+    .portrait {
+      width: 100%;
+      max-width: 180px;
       display: block;
-      max-width: 100%;
-      max-height: 550px;
-      object-fit: contain;
-      transition: transform 0.3s ease;
-      transform-origin: center center;
-      pointer-events: none;
+      border-radius: 1.5rem;
+      object-fit: cover;
+      box-shadow: 0 24px 40px rgba(20, 20, 20, 0.08);
+      margin-bottom: 1.5rem;
     }
 
-    .image-wrapper.zoomed img {
-      transform: scale(2.5);
+    .prose {
+      font-size: clamp(0.95rem, 1.4vw, 1.05rem);
+      font-weight: 400;
+      line-height: 1.72;
+      color: var(--text);
+    }
+
+    .prose p {
+      margin-bottom: 1.2rem;
+    }
+
+    .prose p:last-of-type {
+      margin-bottom: 1.2rem;
+    }
+
+    .prose a {
+      text-decoration-thickness: 1px;
+      text-underline-offset: 0.16em;
+    }
+
+    .prose a:hover {
+      opacity: 0.72;
+    }
+
+    .quotes-list {
+      list-style: none;
+      counter-reset: quote-num;
+      margin-top: 0;
+    }
+
+    .quotes-list li {
+      margin-bottom: 0.5rem;
+      padding-left: 2rem;
+      position: relative;
+      counter-increment: quote-num;
+      opacity: 0.9;
+    }
+
+    .quotes-list li::before {
+      content: counter(quote-num) ") ";
+      position: absolute;
+      left: 0;
+    }
+
+    @media (max-width: 720px) {
+      body {
+        padding-left: 1rem;
+        padding-right: 1rem;
+      }
     }
   </style>
 </head>
 <body>
   <div class="container">
-    <div class="image-wrapper" id="wrapper">
-      <img src="img/map.webp" id="img" alt="" draggable="false" />
+    <div class="content prose">
+      <img src="img/me.png" alt="Yeng Tan" class="portrait" />
+      <p>Selamat Pagi.</p>
+      <p>
+        My name is Yeng, and I'm interested in how symbolic systems shape human behavior. I trained in classical music and performed with <a href="https://www.nytimes.com/2015/08/07/arts/international/for-asian-youth-orchestra-mission-is-more-than-just-music.html" target="_blank" rel="noopener noreferrer">Steven Isserlis and the Asian Youth Orchestra</a>. Then, I studied software engineering with <a href="https://www.researchgate.net/publication/333994493_Computer_Scientists_as_Modern_Hypnotists_Placing_a_Trance_on_Societal_Norms" target="_blank" rel="noopener noreferrer">Dr. Nicholas Sakellariou</a> before moving to San Francisco to work at <a href="https://www.prnewswire.com/news-releases/godaddy-reports-strong-fourth-quarter-and-full-year-2024-results-302376498.html" target="_blank" rel="noopener noreferrer">GoDaddy Airo</a>. I also published <a href="https://www.nst.com.my/lifestyle/sunday-vibes/2022/06/808206/book-review-yeng-tans-mister-yam-winged-sheep-leads-young-man" target="_blank" rel="noopener noreferrer">fiction</a> and organized a <a href="https://ra.co/promoters/106558" target="_blank" rel="noopener noreferrer">techno series</a>.
+      </p>
+      <p>
+        Now, I'm building <a href="https://lekondo.com/" target="_blank" rel="noopener noreferrer">Lekondo</a>. Fashion is the largest category of e-commerce, yet the best discovery tool is still a friend wearing Ann Demeulemeester. We're fixing that.
+      </p>
+      <p>
+        Things other people said better than I could:
+      </p>
+      <ol class="quotes-list">
+        <li>"There is nothing outside the text." — Jacques Derrida</li>
+        <li>"I would rather have questions that can't be answered than answers that can't be questioned." — Richard Feynman</li>
+        <li>"The reason we go to poetry is not for wisdom, but for the dismantling of wisdom." — Jacques Lacan</li>
+        <li>"Never try to convey your idea to the audience; it is a thankless and senseless task. Show them life, and they'll find within themselves the means to assess and appreciate it." — Andrei Tarkovsky</li>
+      </ol>
     </div>
   </div>
 
   <script>
     console.log('%cThose who know don\'t say; those who say don\'t know', 'font-style: italic; color: #888;');
-
-    const wrapper = document.getElementById('wrapper');
-    const img = document.getElementById('img');
-    
-    let zoomed = false;
-    let isDragging = false;
-    let startX, startY;
-    let originX = 50, originY = 50;
-
-    // Click to zoom in/out
-    wrapper.addEventListener('click', (e) => {
-      if (isDragging) return; // Don't toggle if we were dragging
-      
-      if (!zoomed) {
-        // Zoom in at click point
-        const rect = wrapper.getBoundingClientRect();
-        originX = ((e.clientX - rect.left) / rect.width) * 100;
-        originY = ((e.clientY - rect.top) / rect.height) * 100;
-        img.style.transformOrigin = `${originX}% ${originY}%`;
-        zoomed = true;
-        wrapper.classList.add('zoomed');
-      } else {
-        // Zoom out
-        zoomed = false;
-        wrapper.classList.remove('zoomed');
-      }
-    });
-
-    // Drag to pan when zoomed
-    wrapper.addEventListener('mousedown', (e) => {
-      if (!zoomed) return;
-      e.preventDefault();
-      isDragging = false;
-      startX = e.clientX;
-      startY = e.clientY;
-      wrapper.classList.add('dragging');
-      
-      const onMove = (e) => {
-        const dx = e.clientX - startX;
-        const dy = e.clientY - startY;
-        
-        // Only count as dragging if moved more than 5px
-        if (Math.abs(dx) > 5 || Math.abs(dy) > 5) {
-          isDragging = true;
-        }
-        
-        // Adjust origin based on drag (inverted because we're moving the origin)
-        const rect = wrapper.getBoundingClientRect();
-        const sensitivity = 100 / rect.width * 0.5;
-        
-        let newOriginX = originX - dx * sensitivity;
-        let newOriginY = originY - dy * sensitivity;
-        
-        // Clamp to reasonable bounds
-        newOriginX = Math.max(0, Math.min(100, newOriginX));
-        newOriginY = Math.max(0, Math.min(100, newOriginY));
-        
-        img.style.transformOrigin = `${newOriginX}% ${newOriginY}%`;
-      };
-      
-      const onUp = (e) => {
-        wrapper.classList.remove('dragging');
-        
-        // Update stored origin
-        const rect = wrapper.getBoundingClientRect();
-        const sensitivity = 100 / rect.width * 0.5;
-        const dx = e.clientX - startX;
-        const dy = e.clientY - startY;
-        
-        originX = Math.max(0, Math.min(100, originX - dx * sensitivity));
-        originY = Math.max(0, Math.min(100, originY - dy * sensitivity));
-        
-        document.removeEventListener('mousemove', onMove);
-        document.removeEventListener('mouseup', onUp);
-        
-        // Reset drag flag after a tick to prevent click from firing
-        setTimeout(() => { isDragging = false; }, 10);
-      };
-      
-      document.addEventListener('mousemove', onMove);
-      document.addEventListener('mouseup', onUp);
-    });
   </script>
 </body>
 </html>
