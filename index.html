@@ -107,6 +107,8 @@
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+  <script src="https://cdn.jsdelivr.net/npm/d3-geo-projection@4"></script>
+  <script src="https://cdn.jsdelivr.net/npm/topojson-client@3"></script>
   <script>
   (function() {
     const W = 896, H = 616;
@@ -143,7 +145,7 @@
     const visualizations = {
 
       // ─── IRIDESCENCE (old: oil-on-water noise) ───
-      'iridescence': function() {
+      'oil': function() {
         const c = makeCanvas(); viz.appendChild(c);
         const ctx = c.getContext('2d');
         const noise = buildNoise();
@@ -315,59 +317,108 @@
         frame();
       },
 
-      // ─── CARTOGRAPHY (new: 3D terrain mesh) ───
-      'cartography': function() {
-        const c = makeCanvas(); viz.appendChild(c);
-        const ctx = c.getContext('2d');
-        const noise=buildNoise();
-        let t=0;
-        const cols=80,rows=50;
-        function frame(){
-          ctx.fillStyle='rgba(60,93,62,1)';ctx.fillRect(0,0,W,H);
-          const vanishY=H*0.25;
-          const baseY=H*0.95;
-          for(let j=0;j<rows;j++){
-            const rowT=j/rows;
-            const perspective=0.3+rowT*0.7;
-            const yBase=vanishY+(baseY-vanishY)*rowT*rowT;
-            const xSpread=W*0.1+W*0.8*perspective;
-            const xStart=(W-xSpread)/2;
-            ctx.beginPath();
-            for(let i=0;i<=cols;i++){
-              const colT=i/cols;
-              const x=xStart+colT*xSpread;
-              const elev=noise(colT*3+t*0.3,rowT*3+t*0.15)*40*perspective;
-              const elev2=noise(colT*5+t*0.2+10,rowT*5+t*0.1+10)*15*perspective;
-              const y=yBase-elev-elev2;
-              i===0?ctx.moveTo(x,y):ctx.lineTo(x,y);
-            }
-            const alpha=0.05+rowT*0.25;
-            ctx.strokeStyle='rgba(255,255,255,'+alpha+')';
-            ctx.lineWidth=0.7;
-            ctx.stroke();
-          }
-          for(let i=0;i<=cols;i+=4){
-            const colT=i/cols;
-            ctx.beginPath();
-            for(let j=0;j<rows;j++){
-              const rowT=j/rows;
-              const perspective=0.3+rowT*0.7;
-              const yBase=vanishY+(baseY-vanishY)*rowT*rowT;
-              const xSpread=W*0.1+W*0.8*perspective;
-              const xStart=(W-xSpread)/2;
-              const x=xStart+colT*xSpread;
-              const elev=noise(colT*3+t*0.3,rowT*3+t*0.15)*40*perspective;
-              const elev2=noise(colT*5+t*0.2+10,rowT*5+t*0.1+10)*15*perspective;
-              const y=yBase-elev-elev2;
-              j===0?ctx.moveTo(x,y):ctx.lineTo(x,y);
-            }
-            ctx.strokeStyle='rgba(255,255,255,0.06)';
-            ctx.stroke();
-          }
-          t+=0.008;
-          currentAnim=requestAnimationFrame(frame);
-        }
-        frame();
+      // ─── EVANGELION (Radial tidy tree — NERV hierarchy) ───
+      'evangelion': function() {
+        const container=viz;
+        // NERV hierarchy data
+        const data={name:"SEELE",children:[
+          {name:"NERV",children:[
+            {name:"Command",children:[
+              {name:"Ikari Gendo"},{name:"Fuyutsuki"},{name:"Operations",children:[
+                {name:"Katsuragi"},{name:"Ibuki"},{name:"Hyuga"},{name:"Aoba"}
+              ]}
+            ]},
+            {name:"Project E",children:[
+              {name:"Dr. Akagi",children:[{name:"MAGI",children:[
+                {name:"Melchior"},{name:"Balthasar"},{name:"Casper"}
+              ]}]},
+              {name:"Eva Units",children:[
+                {name:"Unit-00",children:[{name:"Ayanami"}]},
+                {name:"Unit-01",children:[{name:"Ikari Shinji"}]},
+                {name:"Unit-02",children:[{name:"Soryu Asuka"}]},
+                {name:"Unit-03"},{name:"Unit-04"}
+              ]}
+            ]},
+            {name:"Section 2",children:[
+              {name:"Intelligence"},{name:"Security"},{name:"Surveillance"}
+            ]},
+            {name:"GeoFront",children:[
+              {name:"Terminal Dogma",children:[{name:"Lilith"},{name:"LCL Plant"}]},
+              {name:"Central Dogma",children:[{name:"Cage"},{name:"Pribnow Box"}]},
+              {name:"Facilities",children:[{name:"Hospital"},{name:"School"},{name:"Residential"}]}
+            ]}
+          ]},
+          {name:"Angels",children:[
+            {name:"Adam"},{name:"Sachiel"},{name:"Shamshel"},{name:"Ramiel"},
+            {name:"Gaghiel"},{name:"Israfel"},{name:"Sandalphon"},
+            {name:"Matarael"},{name:"Sahaquiel"},{name:"Ireul"},
+            {name:"Leliel"},{name:"Bardiel"},{name:"Zeruel"},
+            {name:"Arael"},{name:"Armisael"},{name:"Tabris"}
+          ]},
+          {name:"Human Instrumentality",children:[
+            {name:"Dead Sea Scrolls"},{name:"Spear of Longinus"},
+            {name:"S² Engine"},{name:"AT Field Theory"},
+            {name:"Complementation"}
+          ]}
+        ]};
+
+        const size=Math.max(W,H);
+        const radius=size/2-20;
+        const cx=W*0.5,cy=H*0.5;
+
+        const tree=d3.tree()
+          .size([2*Math.PI,radius])
+          .separation((a,b)=>(a.parent===b.parent?1:2)/a.depth);
+
+        const root=tree(d3.hierarchy(data)
+          .sort((a,b)=>d3.ascending(a.data.name,b.data.name)));
+
+        const svg=d3.create("svg")
+          .attr("width",W).attr("height",H)
+          .attr("viewBox",[-cx,-cy,W,H])
+          .attr("style","width:100%;height:100%;");
+
+        // links
+        svg.append("g")
+          .attr("fill","none")
+          .attr("stroke","rgba(200,230,210,0.25)")
+          .attr("stroke-width",1)
+          .selectAll("path")
+          .data(root.links())
+          .join("path")
+          .attr("d",d3.linkRadial().angle(d=>d.x).radius(d=>d.y));
+
+        // nodes
+        svg.append("g")
+          .selectAll("circle")
+          .data(root.descendants())
+          .join("circle")
+          .attr("transform",d=>"rotate("+(d.x*180/Math.PI-90)+") translate("+d.y+",0)")
+          .attr("fill",d=>d.children?"rgba(200,230,210,0.6)":"rgba(200,230,210,0.35)")
+          .attr("r",d=>d.depth===0?4:d.children?2.5:1.8);
+
+        // labels
+        svg.append("g")
+          .attr("stroke-linejoin","round")
+          .attr("stroke-width",3)
+          .selectAll("text")
+          .data(root.descendants())
+          .join("text")
+          .attr("transform",d=>"rotate("+(d.x*180/Math.PI-90)+") translate("+d.y+",0) rotate("+(d.x>=Math.PI?180:0)+")")
+          .attr("dy","0.31em")
+          .attr("x",d=>d.x<Math.PI===!d.children?6:-6)
+          .attr("text-anchor",d=>d.x<Math.PI===!d.children?"start":"end")
+          .attr("paint-order","stroke")
+          .attr("stroke","#3C5D3E")
+          .attr("fill","rgba(200,230,210,0.7)")
+          .attr("font-family","'Lora', Georgia, serif")
+          .attr("font-size",d=>d.depth===0?"14px":d.depth===1?"11px":"9px")
+          .text(d=>d.data.name);
+
+        container.appendChild(svg.node());
+
+        // static — no animation needed
+        currentAnim=null;
       },
 
       // ─── DISSOLUTION (new: fluid/ink sim) ───
@@ -539,7 +590,7 @@
     };
 
     // ── Build tabs ──
-    const names = ['orrery','palimpsest','morphogenesis','filament','voronoi','moiré','dissolution','iridescence','cartography'];
+    const names = ['orrery','palimpsest','morphogenesis','filament','voronoi','moiré','dissolution','oil','evangelion'];
     let activeBtn = null;
 
     names.forEach((name, i) => {
