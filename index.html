@@ -4,139 +4,566 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Yeng Tan</title>
-  <meta name="description" content="Yeng Tan (CEO, Lekondo)" />
+  <meta name="description" content="Yeng Tan" />
   <link rel="icon" href="img/favicon.svg" type="image/svg+xml" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet" />
 
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
 
-    :root {
-      color-scheme: light;
-      --background: #fff;
-      --text: #141414;
-      --muted: #4c4c47;
-    }
-
-    html, body {
-      min-height: 100%;
-      background: var(--background);
-      color: var(--text);
-      font-family: 'Lora', Georgia, serif;
-      text-align: left;
+    html {
+      height: 100%;
+      background: #3C5D3E;
     }
 
     body {
-      padding: 0 1.5rem 8rem;
+      min-height: 100%;
+      background: #3C5D3E;
+      color: rgba(255,255,255,0.85);
+      font-family: 'Lora', Georgia, serif;
+      -webkit-font-smoothing: antialiased;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
 
-    .container {
-      width: 100%;
-      max-width: 880px;
-      margin: 0;
-      padding-top: clamp(2.5rem, 7vw, 5.5rem);
-    }
+    .center { text-align: center; padding: 2rem; }
 
-    .content {
-      max-width: 880px;
-      width: 100%;
-    }
-
-    .portrait {
-      width: 100%;
-      max-width: 240px;
-      display: block;
-      border-radius: 0.5rem;
-      object-fit: cover;
-      box-shadow: 0 24px 40px rgba(20, 20, 20, 0.08);
-      margin-bottom: 1.5rem;
-    }
-
-    .prose {
-      font-size: clamp(0.95rem, 1.4vw, 1.05rem);
+    h1 {
+      font-size: clamp(1.6rem, 3vw, 2.2rem);
       font-weight: 400;
-      line-height: 1.72;
-      color: var(--text);
+      margin-bottom: 1.4rem;
     }
 
-    .prose p {
-      margin-bottom: 1.2rem;
+    .lines {
+      font-size: clamp(0.85rem, 1.2vw, 0.95rem);
+      font-weight: 400;
+      line-height: 1.9;
     }
 
-    .prose p:last-of-type {
-      margin-bottom: 1.2rem;
+    a { color: inherit; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    /* Tabs */
+    .tabs {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 0.3rem 0.8rem;
+      margin-bottom: 1.5rem;
+      font-size: 0.9rem;
+      letter-spacing: 0.03em;
+    }
+    .tabs button {
+      background: none;
+      border: none;
+      color: rgba(255,255,255,0.35);
+      font-family: 'Lora', Georgia, serif;
+      font-size: 0.9rem;
+      cursor: pointer;
+      padding: 0.25rem 0.4rem;
+      border-bottom: 1px solid transparent;
+      transition: color 0.2s, border-color 0.2s;
+    }
+    .tabs button:hover { color: rgba(255,255,255,0.65); }
+    .tabs button.active {
+      color: rgba(255,255,255,0.85);
+      border-bottom-color: rgba(255,255,255,0.5);
     }
 
-    .prose a {
-      text-decoration-thickness: 1px;
-      text-underline-offset: 0.16em;
-    }
-
-    .prose a:hover {
-      opacity: 0.72;
-    }
-
-    .quotes-list {
-      list-style: none;
-      counter-reset: quote-num;
-      margin-top: 0;
-    }
-
-    .quotes-list li {
-      margin-bottom: 0.5rem;
-      padding-left: 2rem;
+    #viz {
+      width: min(90vw, 896px);
+      aspect-ratio: 896 / 616;
+      margin: 0 auto 1.5rem;
       position: relative;
-      counter-increment: quote-num;
-      opacity: 0.9;
+      border-radius: 0.5rem;
+      overflow: hidden;
     }
-
-    .quotes-list li::before {
-      content: counter(quote-num) ") ";
+    #viz canvas, #viz svg {
       position: absolute;
-      left: 0;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
     }
 
-    @media (max-width: 720px) {
-      body {
-        padding-left: 1rem;
-        padding-right: 1rem;
-      }
+    @media (max-width: 600px) {
+      .center { padding: 1rem; }
+      .tabs { gap: 0.2rem 0.5rem; }
+      .tabs button { font-size: 0.75rem; }
     }
   </style>
 </head>
 <body>
-  <div class="container">
-    <div class="content prose">
-      <img src="img/me.png" alt="Yeng Tan" class="portrait" />
-      <p>Hello, my name is Yeng.</p>
-      I care about taste, form, and how people discover things.
-      </p>
-      <p>
-        I grew up playing classical music and performed with the <a href="https://www.nytimes.com/2015/08/07/arts/international/for-asian-youth-orchestra-mission-is-more-than-just-music.html" target="_blank" rel="noopener noreferrer">Asian Youth Orchestra</a>. Later I studied software engineering and moved to San Francisco to work at <a href="https://www.prnewswire.com/news-releases/godaddy-reports-strong-fourth-quarter-and-full-year-2024-results-302376498.html" target="_blank" rel="noopener noreferrer">GoDaddy Airo</a>. Along the way I published <a href="https://www.nst.com.my/lifestyle/sunday-vibes/2022/06/808206/book-review-yeng-tans-mister-yam-winged-sheep-leads-young-man" target="_blank" rel="noopener noreferrer">fiction</a> and organized a <a href="https://ra.co/promoters/106558" target="_blank" rel="noopener noreferrer">techno series</a>.
-      </p>
-      <p>
-        Now, I'm building <a href="https://lekondo.com/" target="_blank" rel="noopener noreferrer">Lekondo</a>.
-      </p>
-      <p>
-        Things other people said better than I could:
-      </p>
-      <ol class="quotes-list">
-        <li>"I work in three shades of black." — Rei Kawakubo</li>
-        <li>"The conditions of your success are the conditions of your suffering." — Jensen Huang</li>
-        <li>"Bottomless wonders spring from simple rules, which are repeated without end." — Benoit Mandelbrot</li>
-        <li>"Never try to convey your idea to the audience; it is a thankless and senseless task. Show them life, and they'll find within themselves the means to assess and appreciate it." — Andrei Tarkovsky</li>
-      </ol>
+  <div class="center">
+    <div class="tabs" id="tabs"></div>
+    <div id="viz"></div>
+    <h1>i'm yeng</h1>
+    <div class="lines">
+      <p>building <a href="https://lekondo.com/" target="_blank" rel="noopener noreferrer">lekondo</a></p>
+      <p>published <a href="https://www.nst.com.my/lifestyle/sunday-vibes/2022/06/808206/book-review-yeng-tans-mister-yam-winged-sheep-leads-young-man" target="_blank" rel="noopener noreferrer">fiction</a>, previously at <a href="https://www.prnewswire.com/news-releases/godaddy-reports-strong-fourth-quarter-and-full-year-2024-results-302376498.html" target="_blank" rel="noopener noreferrer">godaddy airo</a></p>
+      <p>organized a <a href="https://ra.co/promoters/106558" target="_blank" rel="noopener noreferrer">techno series</a></p>
     </div>
   </div>
 
+  <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
   <script>
+  (function() {
+    const W = 896, H = 616;
+    const viz = document.getElementById('viz');
+    const tabsEl = document.getElementById('tabs');
+    let currentAnim = null;
+
+    function makeCanvas() {
+      const c = document.createElement('canvas');
+      c.width = W; c.height = H;
+      return c;
+    }
+
+    // ── Perlin noise (simplex-ish) ──
+    function buildNoise() {
+      const perm = new Uint8Array(512);
+      const p = new Uint8Array(256);
+      for (let i = 0; i < 256; i++) p[i] = i;
+      for (let i = 255; i > 0; i--) { const j = Math.floor(Math.random()*(i+1)); [p[i],p[j]]=[p[j],p[i]]; }
+      for (let i = 0; i < 512; i++) perm[i] = p[i & 255];
+      const grad = [[1,1],[-1,1],[1,-1],[-1,-1],[1,0],[-1,0],[0,1],[0,-1]];
+      function fade(t){return t*t*t*(t*(t*6-15)+10)}
+      function lerp(a,b,t){return a+t*(b-a)}
+      return function(x,y) {
+        const X=Math.floor(x)&255, Y=Math.floor(y)&255;
+        const xf=x-Math.floor(x), yf=y-Math.floor(y);
+        const u=fade(xf), v=fade(yf);
+        const aa=perm[perm[X]+Y]%8, ab=perm[perm[X]+Y+1]%8, ba=perm[perm[X+1]+Y]%8, bb=perm[perm[X+1]+Y+1]%8;
+        const dot=(g,x,y)=>grad[g][0]*x+grad[g][1]*y;
+        return lerp(lerp(dot(aa,xf,yf),dot(ba,xf-1,yf),u),lerp(dot(ab,xf,yf-1),dot(bb,xf-1,yf-1),u),v);
+      };
+    }
+
+    const visualizations = {
+
+      // ─── IRIDESCENCE (old: oil-on-water noise) ───
+      'iridescence': function() {
+        const c = makeCanvas(); viz.appendChild(c);
+        const ctx = c.getContext('2d');
+        const noise = buildNoise();
+        let t=0;
+        const img=ctx.createImageData(W,H);
+        function frame(){
+          for(let y=0;y<H;y++){
+            for(let x=0;x<W;x++){
+              const n1=noise(x*0.008+t,y*0.008);
+              const n2=noise(x*0.012-t*0.7,y*0.012+t*0.5);
+              const n3=noise(x*0.005+t*0.3,y*0.005-t*0.4);
+              const v=(n1+n2+n3)/3;
+              const i=(y*W+x)*4;
+              img.data[i]=Math.floor(40+v*40+Math.sin(v*12)*15);
+              img.data[i+1]=Math.floor(70+v*60+Math.sin(v*10+1)*20);
+              img.data[i+2]=Math.floor(45+v*40+Math.cos(v*14)*15);
+              img.data[i+3]=255;
+            }
+          }
+          ctx.putImageData(img,0,0);
+          t+=0.01;
+          currentAnim=requestAnimationFrame(frame);
+        }
+        frame();
+      },
+
+      // ─── MORPHOGENESIS (old: reaction-diffusion) ───
+      'morphogenesis': function() {
+        const c = makeCanvas(); viz.appendChild(c);
+        const ctx = c.getContext('2d');
+        const gw=160, gh=110;
+        const dA=1.0,dB=0.5,feed=0.055,kill=0.062;
+        let gridA=[], gridB=[], nextA=[], nextB=[];
+        for(let i=0;i<gw*gh;i++){gridA[i]=1;gridB[i]=0;nextA[i]=0;nextB[i]=0;}
+        for(let k=0;k<12;k++){
+          const cx=20+Math.random()*(gw-40), cy=15+Math.random()*(gh-30);
+          for(let dx=-3;dx<=3;dx++)for(let dy=-3;dy<=3;dy++){
+            const idx=((cy+dy|0)*gw+(cx+dx|0));
+            if(idx>=0&&idx<gw*gh)gridB[idx]=1;
+          }
+        }
+        function step(){
+          for(let y=1;y<gh-1;y++)for(let x=1;x<gw-1;x++){
+            const i=y*gw+x;
+            const lapA=gridA[i-1]+gridA[i+1]+gridA[i-gw]+gridA[i+gw]-4*gridA[i];
+            const lapB=gridB[i-1]+gridB[i+1]+gridB[i-gw]+gridB[i+gw]-4*gridB[i];
+            const a=gridA[i],b=gridB[i],abb=a*b*b;
+            nextA[i]=a+dA*lapA-abb+feed*(1-a);
+            nextB[i]=b+dB*lapB+abb-(kill+feed)*b;
+            nextA[i]=Math.max(0,Math.min(1,nextA[i]));
+            nextB[i]=Math.max(0,Math.min(1,nextB[i]));
+          }
+          [gridA,nextA]=[nextA,gridA];[gridB,nextB]=[nextB,gridB];
+        }
+        const c2=document.createElement('canvas');c2.width=gw;c2.height=gh;
+        const ctx2=c2.getContext('2d');
+        const img2=ctx2.createImageData(gw,gh);
+        function frame(){
+          for(let s=0;s<8;s++) step();
+          for(let i=0;i<gw*gh;i++){
+            const v=Math.max(0,Math.min(1,gridA[i]-gridB[i]));
+            const bright=v*0.6+0.2;
+            img2.data[i*4]=Math.floor(60+bright*80);
+            img2.data[i*4+1]=Math.floor(93+bright*100);
+            img2.data[i*4+2]=Math.floor(62+bright*80);
+            img2.data[i*4+3]=255;
+          }
+          ctx2.putImageData(img2,0,0);
+          ctx.imageSmoothingEnabled=true;
+          ctx.drawImage(c2,0,0,gw,gh,0,0,W,H);
+          currentAnim=requestAnimationFrame(frame);
+        }
+        frame();
+      },
+
+      // ─── FILAMENT (old: flow field) ───
+      'filament': function() {
+        const c = makeCanvas(); viz.appendChild(c);
+        const ctx = c.getContext('2d');
+        ctx.fillStyle='rgba(60,93,62,1)'; ctx.fillRect(0,0,W,H);
+        const noise = buildNoise();
+        const scale=0.004, particles=[];
+        for(let i=0;i<1200;i++){
+          particles.push({x:Math.random()*W,y:Math.random()*H,age:0,maxAge:80+Math.random()*120});
+        }
+        let t=0;
+        function frame(){
+          ctx.fillStyle='rgba(60,93,62,0.02)';ctx.fillRect(0,0,W,H);
+          particles.forEach(p=>{
+            const angle=noise(p.x*scale,p.y*scale+t*0.3)*Math.PI*4;
+            const vx=Math.cos(angle)*1.5, vy=Math.sin(angle)*1.5;
+            ctx.beginPath();ctx.moveTo(p.x,p.y);
+            p.x+=vx;p.y+=vy;p.age++;
+            ctx.lineTo(p.x,p.y);
+            const alpha=Math.min(1,Math.min(p.age,p.maxAge-p.age)/20)*0.4;
+            ctx.strokeStyle='rgba(255,255,255,'+alpha+')';
+            ctx.lineWidth=0.8;ctx.stroke();
+            if(p.age>p.maxAge||p.x<0||p.x>W||p.y<0||p.y>H){
+              p.x=Math.random()*W;p.y=Math.random()*H;p.age=0;p.maxAge=80+Math.random()*120;
+            }
+          });
+          t+=0.001;
+          currentAnim=requestAnimationFrame(frame);
+        }
+        frame();
+      },
+
+      // ─── VORONOI ───
+      'voronoi': function() {
+        const c = makeCanvas(); viz.appendChild(c);
+        const ctx = c.getContext('2d');
+        const n=60;
+        const points=Array.from({length:n},()=>({
+          x:Math.random()*W,y:Math.random()*H,
+          vx:(Math.random()-0.5)*0.5,vy:(Math.random()-0.5)*0.5
+        }));
+        function frame(){
+          points.forEach(p=>{
+            p.x+=p.vx;p.y+=p.vy;
+            if(p.x<0||p.x>W)p.vx*=-1;
+            if(p.y<0||p.y>H)p.vy*=-1;
+          });
+          const delaunay=d3.Delaunay.from(points,d=>d.x,d=>d.y);
+          const voronoi=delaunay.voronoi([0,0,W,H]);
+          ctx.clearRect(0,0,W,H);
+          ctx.fillStyle='rgba(60,93,62,1)';ctx.fillRect(0,0,W,H);
+          for(let i=0;i<n;i++){
+            const cell=voronoi.cellPolygon(i);
+            if(!cell)continue;
+            ctx.beginPath();
+            ctx.moveTo(cell[0][0],cell[0][1]);
+            for(let j=1;j<cell.length;j++)ctx.lineTo(cell[j][0],cell[j][1]);
+            ctx.closePath();
+            ctx.fillStyle='rgba(255,255,255,'+(0.02+0.03*(i%3))+')';
+            ctx.fill();
+            ctx.strokeStyle='rgba(255,255,255,0.2)';
+            ctx.lineWidth=0.5;ctx.stroke();
+          }
+          currentAnim=requestAnimationFrame(frame);
+        }
+        frame();
+      },
+
+      // ─── MOIRÉ ───
+      'moiré': function() {
+        const c = makeCanvas(); viz.appendChild(c);
+        const ctx = c.getContext('2d');
+        let t=0;
+        function drawGrid(cx,cy,angle,spacing){
+          ctx.save();ctx.translate(cx,cy);ctx.rotate(angle);
+          const diag=Math.hypot(W,H);
+          for(let i=-diag;i<diag;i+=spacing){
+            ctx.beginPath();ctx.moveTo(i,-diag);ctx.lineTo(i,diag);ctx.stroke();
+          }
+          for(let i=-diag;i<diag;i+=spacing){
+            ctx.beginPath();ctx.moveTo(-diag,i);ctx.lineTo(diag,i);ctx.stroke();
+          }
+          ctx.restore();
+        }
+        function frame(){
+          ctx.fillStyle='rgba(60,93,62,1)';ctx.fillRect(0,0,W,H);
+          ctx.strokeStyle='rgba(255,255,255,0.15)';
+          ctx.lineWidth=0.6;
+          drawGrid(W/2,H/2,t*0.15,14);
+          drawGrid(W/2,H/2,-t*0.15+0.3,14);
+          t+=0.01;
+          currentAnim=requestAnimationFrame(frame);
+        }
+        frame();
+      },
+
+      // ─── CARTOGRAPHY (new: 3D terrain mesh) ───
+      'cartography': function() {
+        const c = makeCanvas(); viz.appendChild(c);
+        const ctx = c.getContext('2d');
+        const noise=buildNoise();
+        let t=0;
+        const cols=80,rows=50;
+        function frame(){
+          ctx.fillStyle='rgba(60,93,62,1)';ctx.fillRect(0,0,W,H);
+          const vanishY=H*0.25;
+          const baseY=H*0.95;
+          for(let j=0;j<rows;j++){
+            const rowT=j/rows;
+            const perspective=0.3+rowT*0.7;
+            const yBase=vanishY+(baseY-vanishY)*rowT*rowT;
+            const xSpread=W*0.1+W*0.8*perspective;
+            const xStart=(W-xSpread)/2;
+            ctx.beginPath();
+            for(let i=0;i<=cols;i++){
+              const colT=i/cols;
+              const x=xStart+colT*xSpread;
+              const elev=noise(colT*3+t*0.3,rowT*3+t*0.15)*40*perspective;
+              const elev2=noise(colT*5+t*0.2+10,rowT*5+t*0.1+10)*15*perspective;
+              const y=yBase-elev-elev2;
+              i===0?ctx.moveTo(x,y):ctx.lineTo(x,y);
+            }
+            const alpha=0.05+rowT*0.25;
+            ctx.strokeStyle='rgba(255,255,255,'+alpha+')';
+            ctx.lineWidth=0.7;
+            ctx.stroke();
+          }
+          for(let i=0;i<=cols;i+=4){
+            const colT=i/cols;
+            ctx.beginPath();
+            for(let j=0;j<rows;j++){
+              const rowT=j/rows;
+              const perspective=0.3+rowT*0.7;
+              const yBase=vanishY+(baseY-vanishY)*rowT*rowT;
+              const xSpread=W*0.1+W*0.8*perspective;
+              const xStart=(W-xSpread)/2;
+              const x=xStart+colT*xSpread;
+              const elev=noise(colT*3+t*0.3,rowT*3+t*0.15)*40*perspective;
+              const elev2=noise(colT*5+t*0.2+10,rowT*5+t*0.1+10)*15*perspective;
+              const y=yBase-elev-elev2;
+              j===0?ctx.moveTo(x,y):ctx.lineTo(x,y);
+            }
+            ctx.strokeStyle='rgba(255,255,255,0.06)';
+            ctx.stroke();
+          }
+          t+=0.008;
+          currentAnim=requestAnimationFrame(frame);
+        }
+        frame();
+      },
+
+      // ─── DISSOLUTION (new: fluid/ink sim) ───
+      'dissolution': function() {
+        const c = makeCanvas(); viz.appendChild(c);
+        const ctx = c.getContext('2d');
+        const S=128;
+        const vel_x=new Float32Array(S*S);
+        const vel_y=new Float32Array(S*S);
+        const dens=new Float32Array(S*S);
+        const dens_prev=new Float32Array(S*S);
+        function IX(x,y){return Math.max(0,Math.min(S-1,x|0))+Math.max(0,Math.min(S-1,y|0))*S;}
+        function diffuse(b,x,x0,diff){
+          const a=diff*S*S;
+          for(let k=0;k<4;k++){
+            for(let j=1;j<S-1;j++)for(let i=1;i<S-1;i++){
+              x[IX(i,j)]=(x0[IX(i,j)]+a*(x[IX(i-1,j)]+x[IX(i+1,j)]+x[IX(i,j-1)]+x[IX(i,j+1)]))/(1+4*a);
+            }
+          }
+        }
+        function advect(b,d,d0,u,v){
+          for(let j=1;j<S-1;j++)for(let i=1;i<S-1;i++){
+            let x=i-u[IX(i,j)]*S,y=j-v[IX(i,j)]*S;
+            x=Math.max(0.5,Math.min(S-1.5,x));y=Math.max(0.5,Math.min(S-1.5,y));
+            const i0=x|0,j0=y|0,s1=x-i0,s0=1-s1,t1=y-j0,t0=1-t1;
+            d[IX(i,j)]=s0*(t0*d0[IX(i0,j0)]+t1*d0[IX(i0,j0+1)])+s1*(t0*d0[IX(i0+1,j0)]+t1*d0[IX(i0+1,j0+1)]);
+          }
+        }
+        let t=0;
+        const c2=document.createElement('canvas');c2.width=S;c2.height=S;
+        const ctx2=c2.getContext('2d');
+        const img=ctx2.createImageData(S,S);
+        function frame(){
+          const cx=S/2+Math.sin(t*0.7)*S*0.2;
+          const cy=S/2+Math.cos(t*0.5)*S*0.2;
+          const r=3;
+          for(let dy=-r;dy<=r;dy++)for(let dx=-r;dx<=r;dx++){
+            const idx=IX(cx+dx|0,cy+dy|0);
+            dens[idx]+=0.8;
+            vel_x[idx]+=Math.cos(t*1.3)*0.005;
+            vel_y[idx]+=Math.sin(t*1.7)*0.005;
+          }
+          const cx2=S/2+Math.cos(t*0.4)*S*0.25;
+          const cy2=S/2+Math.sin(t*0.9)*S*0.15;
+          for(let dy=-r;dy<=r;dy++)for(let dx=-r;dx<=r;dx++){
+            const idx=IX(cx2+dx|0,cy2+dy|0);
+            dens[idx]+=0.5;
+            vel_x[idx]-=Math.sin(t*0.8)*0.004;
+            vel_y[idx]+=Math.cos(t*1.1)*0.004;
+          }
+          diffuse(1,vel_x,vel_x,0.0001);
+          diffuse(2,vel_y,vel_y,0.0001);
+          dens_prev.set(dens);
+          diffuse(0,dens,dens_prev,0.0002);
+          dens_prev.set(dens);
+          advect(0,dens,dens_prev,vel_x,vel_y);
+          for(let i=0;i<S*S;i++){dens[i]*=0.995;vel_x[i]*=0.99;vel_y[i]*=0.99;}
+          for(let i=0;i<S*S;i++){
+            const v=Math.min(1,dens[i]);
+            const pi=i*4;
+            img.data[pi]=Math.floor(60+v*150);
+            img.data[pi+1]=Math.floor(93+v*130);
+            img.data[pi+2]=Math.floor(62+v*140);
+            img.data[pi+3]=255;
+          }
+          ctx2.putImageData(img,0,0);
+          ctx.imageSmoothingEnabled=true;
+          ctx.drawImage(c2,0,0,S,S,0,0,W,H);
+          t+=0.02;
+          currentAnim=requestAnimationFrame(frame);
+        }
+        frame();
+      },
+
+      // ─── ORRERY (new: n-body gravity with trails) ───
+      'orrery': function() {
+        const c = makeCanvas(); viz.appendChild(c);
+        const ctx = c.getContext('2d');
+        ctx.fillStyle='rgba(60,93,62,1)';ctx.fillRect(0,0,W,H);
+        const bodies=[];
+        for(let i=0;i<80;i++){
+          const angle=Math.random()*Math.PI*2;
+          const dist=80+Math.random()*200;
+          const speed=0.4+Math.random()*0.8;
+          bodies.push({
+            x:W/2+Math.cos(angle)*dist,
+            y:H/2+Math.sin(angle)*dist,
+            vx:-Math.sin(angle)*speed,
+            vy:Math.cos(angle)*speed,
+            mass:0.5+Math.random()*2,
+            trail:[]
+          });
+        }
+        function frame(){
+          ctx.fillStyle='rgba(60,93,62,0.04)';ctx.fillRect(0,0,W,H);
+          const cx=W/2,cy=H/2,G=0.8;
+          bodies.forEach(b=>{
+            const dx=cx-b.x,dy=cy-b.y;
+            const dist=Math.max(20,Math.hypot(dx,dy));
+            const f=G*50/(dist*dist);
+            b.vx+=dx/dist*f;b.vy+=dy/dist*f;
+            for(let j=0;j<bodies.length;j+=10){
+              const o=bodies[j];if(o===b)continue;
+              const ddx=o.x-b.x,ddy=o.y-b.y;
+              const dd=Math.max(15,Math.hypot(ddx,ddy));
+              const ff=G*o.mass/(dd*dd);
+              b.vx+=ddx/dd*ff*0.3;b.vy+=ddy/dd*ff*0.3;
+            }
+            b.vx*=0.999;b.vy*=0.999;
+            b.x+=b.vx;b.y+=b.vy;
+            b.trail.push({x:b.x,y:b.y});
+            if(b.trail.length>60)b.trail.shift();
+          });
+          bodies.forEach(b=>{
+            if(b.trail.length<2)return;
+            ctx.beginPath();
+            b.trail.forEach((p,i)=>i===0?ctx.moveTo(p.x,p.y):ctx.lineTo(p.x,p.y));
+            ctx.strokeStyle='rgba(255,255,255,0.08)';
+            ctx.lineWidth=0.8;ctx.stroke();
+            const h=b.trail[b.trail.length-1];
+            ctx.beginPath();ctx.arc(h.x,h.y,b.mass,0,Math.PI*2);
+            ctx.fillStyle='rgba(255,255,255,0.5)';ctx.fill();
+          });
+          currentAnim=requestAnimationFrame(frame);
+        }
+        frame();
+      },
+
+      // ─── PALIMPSEST (new: domain warp — nested noise distortion) ───
+      'palimpsest': function() {
+        const c = makeCanvas(); viz.appendChild(c);
+        const ctx = c.getContext('2d');
+        const noise = buildNoise();
+        let t=0;
+        const hw=W/2|0, hh=H/2|0;
+        const c2=document.createElement('canvas');c2.width=hw;c2.height=hh;
+        const ctx2=c2.getContext('2d');
+        const img=ctx2.createImageData(hw,hh);
+        function fbm(x,y){
+          let v=0,a=0.5,f=1;
+          for(let i=0;i<5;i++){v+=a*noise(x*f,y*f);f*=2;a*=0.5;}
+          return v;
+        }
+        function frame(){
+          for(let py=0;py<hh;py++){
+            for(let px=0;px<hw;px++){
+              const x=px*0.005,y=py*0.005;
+              const qx=fbm(x+t*0.15,y);
+              const qy=fbm(x,y+t*0.12);
+              const rx=fbm(x+qx*4+t*0.1,y+qy*4+t*0.08);
+              const ry=fbm(x+qx*4-t*0.06,y+qy*4+t*0.13);
+              const v=fbm(x+rx*4,y+ry*4);
+              const i=(py*hw+px)*4;
+              const warm=Math.sin(v*6+t)*0.5+0.5;
+              img.data[i]=Math.floor(30+v*50+warm*40);
+              img.data[i+1]=Math.floor(55+v*80+warm*20+qx*30);
+              img.data[i+2]=Math.floor(35+v*45+rx*25+warm*15);
+              img.data[i+3]=255;
+            }
+          }
+          ctx2.putImageData(img,0,0);
+          ctx.imageSmoothingEnabled=true;
+          ctx.drawImage(c2,0,0,hw,hh,0,0,W,H);
+          t+=0.003;
+          currentAnim=requestAnimationFrame(frame);
+        }
+        frame();
+      }
+    };
+
+    // ── Build tabs ──
+    const names = ['orrery','palimpsest','morphogenesis','filament','voronoi','moiré','dissolution','iridescence','cartography'];
+    let activeBtn = null;
+
+    names.forEach((name, i) => {
+      const btn = document.createElement('button');
+      btn.textContent = name;
+      btn.onclick = () => activate(name, btn);
+      tabsEl.appendChild(btn);
+    });
+
+    function activate(name, btn) {
+      if (currentAnim) cancelAnimationFrame(currentAnim);
+      currentAnim = null;
+      viz.innerHTML = '';
+      if (activeBtn) activeBtn.classList.remove('active');
+      btn.classList.add('active');
+      activeBtn = btn;
+      visualizations[name]();
+    }
+
+    // Start with first one
+    activate(names[0], tabsEl.children[0]);
+
     console.log('%cThose who know don\'t say; those who say don\'t know', 'font-style: italic; color: #888;');
+  })();
   </script>
 </body>
 </html>
